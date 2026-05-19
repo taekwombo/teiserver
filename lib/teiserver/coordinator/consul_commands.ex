@@ -1247,11 +1247,11 @@ defmodule Teiserver.Coordinator.ConsulCommands do
 
     name_validation_error =
       cond do
-        not LobbyLib.name_chars_valid?(new_name) ->
-          "That name contains one or more invalid characters (alphanumeric, spaces and some special characters allowed)"
-
         not LobbyLib.name_length_valid?(new_name) ->
           "That lobby name is too long"
+
+        not LobbyLib.name_chars_valid?(new_name) ->
+          "That name contains one or more invalid characters (alphanumeric, spaces and some special characters allowed)"
 
         WordLib.flagged_words(new_name) > 0 ->
           "That lobby name been rejected. Please be aware that misuse of the lobby naming system can cause your chat privileges to be revoked."
