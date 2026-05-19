@@ -180,6 +180,9 @@ defmodule Teiserver.Lobby.LobbyLib do
       String.trim(data.name || "") == "" ->
         {:error, "No lobby name supplied"}
 
+      not name_length_valid?(data.name) ->
+        {:error, "Lobby name too long"}
+
       not Enum.member?(["normal", "replay"], data.type) ->
         {:error, "Invalid type '#{data.type}'"}
 
@@ -594,5 +597,24 @@ defmodule Teiserver.Lobby.LobbyLib do
     else
       nil
     end
+  end
+
+  # Lobby name and teaser validation
+  @spec max_name_length() :: integer
+  defp max_name_length() do
+    Application.get_env(:teiserver, TeiServer.Lobby.LobbyLib)[:max_name_length]
+  end
+
+  @spec name_chars_valid?(String.t()) :: boolean
+  def name_chars_valid?(name) do
+    case Regex.run(~r/^[a-zA-Z0-9_\-\[\] \<\>\+\|:]+$/, name) do
+      [_match]  -> true
+      _no_match -> false
+    end
+  end
+
+  @spec name_length_valid?(String.t()) :: boolean
+  def name_length_valid?(name) do
+    String.length(name) <= max_name_length()
   end
 end
