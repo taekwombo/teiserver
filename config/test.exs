@@ -76,5 +76,4 @@ config :teiserver, Teiserver.Mailer,
   noreply_address: "noreply@testsite.co.uk",
   contact_address: "info@testsite.co.uk"
 
-config :teiserver, Teiserver.Lobby.LobbyLib,
-    max_name_length: 70
+config :teiserver, Teiserver.Lobby.LobbyLib, max_name_length: 70

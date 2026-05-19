@@ -1244,7 +1244,7 @@ defmodule Teiserver.Coordinator.ConsulCommands do
   def handle_command(%{command: "rename", remaining: new_name, senderid: senderid} = cmd, state) do
     new_name = String.trim(new_name)
     lobby = Lobby.get_lobby(state.lobby_id)
-    
+
     name_validation_error =
       cond do
         not LobbyLib.name_chars_valid?(new_name) ->
@@ -1256,10 +1256,11 @@ defmodule Teiserver.Coordinator.ConsulCommands do
         WordLib.flagged_words(new_name) > 0 ->
           "That lobby name been rejected. Please be aware that misuse of the lobby naming system can cause your chat privileges to be revoked."
 
-        true -> case LobbyRestrictions.check_lobby_name(new_name, state) do
-          :ok -> nil
-          { :error, error } -> error
-        end
+        true ->
+          case LobbyRestrictions.check_lobby_name(new_name, state) do
+            :ok -> nil
+            {:error, error} -> error
+          end
       end
 
     cond do
@@ -1287,6 +1288,7 @@ defmodule Teiserver.Coordinator.ConsulCommands do
         ConsulServer.say_command(cmd, state)
 
         tips = LobbyRestrictions.get_tips(new_name)
+
         if tips != nil do
           # Send coordinator message which can be long; appears on right
           CacheUser.send_direct_message(state.coordinator_id, senderid, tips)
