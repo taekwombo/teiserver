@@ -600,9 +600,9 @@ defmodule Teiserver.Lobby.LobbyLib do
   end
 
   # Lobby name and teaser validation
-  @spec max_name_length() :: integer
-  defp max_name_length() do
-    Application.get_env(:teiserver, TeiServer.Lobby.LobbyLib)[:max_name_length]
+  @spec max_name_length :: integer | nil
+  def max_name_length do
+    Application.get_env(:teiserver, Teiserver.Lobby.LobbyLib)[:max_name_length]
   end
 
   @spec name_chars_valid?(String.t()) :: boolean
