@@ -1286,9 +1286,10 @@ defmodule Teiserver.Coordinator.ConsulCommands do
 
         ConsulServer.say_command(cmd, state)
 
-        if check_name_msg != nil do
+        tips = LobbyRestrictions.get_tips(new_name)
+        if tips != nil do
           # Send coordinator message which can be long; appears on right
-          CacheUser.send_direct_message(state.coordinator_id, senderid, check_name_msg)
+          CacheUser.send_direct_message(state.coordinator_id, senderid, tips)
         end
 
         state
